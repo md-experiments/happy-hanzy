@@ -2,7 +2,8 @@
 Seed data script to populate Firestore with sample radicals and characters.
 Run this script once to initialize your database with learning content.
 """
-
+from dotenv import load_dotenv
+load_dotenv()
 from services.firebase_service import initialize_firebase
 from datetime import datetime
 
