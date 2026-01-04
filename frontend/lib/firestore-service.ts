@@ -38,7 +38,7 @@ export const getRadicalById = async (radicalId: string): Promise<Radical | null>
 };
 
 // Character Operations
-export const getCharacters = async (limitCount: number = 50, hskLevel?: number) => {
+export const getCharacters = async (limitCount: number = 50, hskLevel?: number): Promise<Character[]> => {
   try {
     const charactersRef = collection(db, 'characters');
     let q = query(charactersRef, orderBy('frequency', 'desc'), limit(limitCount));
@@ -52,14 +52,14 @@ export const getCharacters = async (limitCount: number = 50, hskLevel?: number) 
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }));
+    } as Character));
   } catch (error) {
     console.error('Error fetching characters:', error);
     return [];
   }
 };
 
-export const getCharacterById = async (characterId: string) => {
+export const getCharacterById = async (characterId: string): Promise<Character | null> => {
   try {
     const characterRef = doc(db, 'characters', characterId);
     const characterSnap = await getDoc(characterRef);
@@ -68,7 +68,7 @@ export const getCharacterById = async (characterId: string) => {
       return {
         id: characterSnap.id,
         ...characterSnap.data()
-      };
+      } as Character;
     }
     return null;
   } catch (error) {
@@ -77,7 +77,7 @@ export const getCharacterById = async (characterId: string) => {
   }
 };
 
-export const getCharacterRadicals = async (characterId: string) => {
+export const getCharacterRadicals = async (characterId: string): Promise<Radical[]> => {
   try {
     const character = await getCharacterById(characterId);
     if (!character || !character.radicals) {
