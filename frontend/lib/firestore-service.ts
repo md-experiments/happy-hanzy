@@ -12,14 +12,14 @@ export const getRadicals = async (limitCount: number = 50): Promise<Radical[]> =
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }));
+    } as Radical));
   } catch (error) {
     console.error('Error fetching radicals:', error);
     return [];
   }
 };
 
-export const getRadicalById = async (radicalId: string) => {
+export const getRadicalById = async (radicalId: string): Promise<Radical | null> => {
   try {
     const radicalRef = doc(db, 'radicals', radicalId);
     const radicalSnap = await getDoc(radicalRef);
@@ -28,7 +28,7 @@ export const getRadicalById = async (radicalId: string) => {
       return {
         id: radicalSnap.id,
         ...radicalSnap.data()
-      };
+      } as Radical;
     }
     return null;
   } catch (error) {
