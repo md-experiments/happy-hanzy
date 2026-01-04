@@ -1,8 +1,9 @@
 import { db } from './firebase';
 import { collection, getDocs, getDoc, doc, query, where, orderBy, limit, addDoc, updateDoc } from 'firebase/firestore';
+import { Radical, Character, UserProgress, ProgressStats, Mistake } from './types';
 
 // Radical Operations
-export const getRadicals = async (limitCount: number = 50) => {
+export const getRadicals = async (limitCount: number = 50): Promise<Radical[]> => {
   try {
     const radicalsRef = collection(db, 'radicals');
     const q = query(radicalsRef, orderBy('frequency', 'desc'), limit(limitCount));

@@ -7,18 +7,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import { getRadicalById } from '@/lib/firestore-service';
+import { Radical } from '@/lib/types';
 
 export default function RadicalDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const [radical, setRadical] = useState<any>(null);
-  const [examples, setExamples] = useState<any[]>([]);
+  const [radical, setRadical] = useState<Radical | null>(null);
+  const [examples, setExamples] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRadical = async () => {
       setLoading(true);
-      const data = await getRadicalById(params.id as string);
+      const data = await getRadicalById(params.id as string) as Radical | null;
       
       if (data) {
         setRadical(data);

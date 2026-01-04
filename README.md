@@ -12,17 +12,29 @@ A comprehensive application for learning Chinese Hanzi characters through radica
 
 ## Architecture
 
-### Frontend
+**Happy Hanzy uses a serverless, Firebase-first architecture:**
+
+### Frontend (Deployed)
 - **Framework**: Next.js 14+ (App Router)
 - **UI**: shadcn/ui + Tailwind CSS
-- **Hosting**: Vercel
-- **State**: React Context + SWR
+- **Hosting**: Vercel (auto-deploy from Git)
+- **Database Access**: Direct Firestore queries via `firestore-service.ts`
+- **Auth**: Firebase Authentication (Email, Google, Anonymous)
 
-### Backend
-- **API**: FastAPI (Python)
-- **Hosting**: Railway.app / Render.com
-- **Database**: Firebase Firestore
-- **Auth**: Firebase Authentication
+### Backend (Local Only - Not Deployed)
+- **Purpose**: Content generation and data seeding ONLY
+- **Framework**: FastAPI (Python)
+- **Usage**: Run locally to populate Firestore with learning content
+- **Note**: Users never interact with backend directly
+
+**Key Benefits:**
+- ✅ Simpler deployment (frontend only)
+- ✅ Lower costs (no backend server)
+- ✅ Better performance (direct Firebase access)
+- ✅ Real-time sync across devices
+- ✅ Automatic scalability
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed documentation.
 
 ## Project Structure
 
