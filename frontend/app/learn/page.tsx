@@ -5,25 +5,21 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, BookOpen } from 'lucide-react';
+import { getRadicals } from '@/lib/firestore-service';
 
 export default function LearnPage() {
   const [radicals, setRadicals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This would fetch from your API
-    // For now, showing placeholder data
-    setLoading(false);
-    setRadicals([
-      { id: '1', character: '人', meaning: 'person', stroke_count: 2 },
-      { id: '2', character: '口', meaning: 'mouth', stroke_count: 3 },
-      { id: '3', character: '手', meaning: 'hand', stroke_count: 4 },
-      { id: '4', character: '心', meaning: 'heart', stroke_count: 4 },
-      { id: '5', character: '水', meaning: 'water', stroke_count: 4 },
-      { id: '6', character: '木', meaning: 'tree/wood', stroke_count: 4 },
-      { id: '7', character: '火', meaning: 'fire', stroke_count: 4 },
-      { id: '8', character: '土', meaning: 'earth', stroke_count: 3 },
-    ]);
+    const fetchRadicals = async () => {
+      setLoading(true);
+      const data = await getRadicals(100); // Fetch up to 100 radicals
+      setRadicals(data);
+      setLoading(false);
+    };
+    
+    fetchRadicals();
   }, []);
 
   return (

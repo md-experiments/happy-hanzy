@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, BookOpen } from 'lucide-react';
+import { getRadicalById } from '@/lib/firestore-service';
 
 export default function RadicalDetailPage() {
   const params = useParams();
@@ -15,26 +16,21 @@ export default function RadicalDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Placeholder data - in production, fetch from API
-    const radicalData = {
-      '1': { id: '1', character: '人', meaning: 'person', stroke_count: 2, examples: ['他 (tā - he)', '你 (nǐ - you)', '們 (men - plural)'] },
-      '2': { id: '2', character: '口', meaning: 'mouth', stroke_count: 3, examples: ['吃 (chī - eat)', '叫 (jiào - call)', '問 (wèn - ask)'] },
-      '3': { id: '3', character: '手', meaning: 'hand', stroke_count: 4, examples: ['打 (dǎ - hit)', '找 (zhǎo - find)', '拿 (ná - take)'] },
-      '4': { id: '4', character: '心', meaning: 'heart', stroke_count: 4, examples: ['想 (xiǎng - think)', '思 (sī - think)', '愛 (ài - love)'] },
-      '5': { id: '5', character: '水', meaning: 'water', stroke_count: 4, examples: ['河 (hé - river)', '海 (hǎi - sea)', '湖 (hú - lake)'] },
-      '6': { id: '6', character: '木', meaning: 'tree/wood', stroke_count: 4, examples: ['林 (lín - forest)', '森 (sēn - dense forest)', '樹 (shù - tree)'] },
-      '7': { id: '7', character: '火', meaning: 'fire', stroke_count: 4, examples: ['炎 (yán - flame)', '燒 (shāo - burn)', '熱 (rè - hot)'] },
-      '8': { id: '8', character: '土', meaning: 'earth', stroke_count: 3, examples: ['地 (dì - earth)', '場 (chǎng - field)', '城 (chéng - city)'] },
+    const fetchRadical = async () => {
+      setLoading(true);
+      const data = await getRadicalById(params.id as string);
+      
+      if (data) {
+        setRadical(data);
+        setExamples(data.examples || []);
+      }
+      
+      setLoading(false);
     };
-
-    const data = radicalData[params.id as string];
     
-    if (data) {
-      setRadical(data);
-      setExamples(data.examples || []);
+    if (params.id) {
+      fetchRadical();
     }
-    
-    setLoading(false);
   }, [params.id]);
 
   if (loading) {

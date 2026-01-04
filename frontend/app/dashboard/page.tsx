@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Brain, TrendingUp, LogOut, User } from 'lucide-react';
+import { getProgressStats } from '@/lib/firestore-service';
 
 export default function DashboardPage() {
   const { user, logout, loading } = useAuth();
@@ -18,12 +19,28 @@ export default function DashboardPage() {
     accuracy_rate: 0,
     streak_days: 0
   });
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/auth/login');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (user && user.uid) {
+        setLoadingStats(true);
+        const userStats = await getProgressStats(user.uid);
+        setStats(userStats);
+        setLoadingStats(false);
+      }
+    };
+    
+    if (user) {
+      fetchStats();
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     await logout();
