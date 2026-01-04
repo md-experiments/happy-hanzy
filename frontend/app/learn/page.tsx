@@ -65,7 +65,7 @@ export default function LearnPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {radicals.map((radical) => (
-              <Card key={radical.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Card key={radical.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center">
                   <div className="text-6xl mb-2">{radical.character}</div>
                   <CardTitle className="text-lg">{radical.meaning}</CardTitle>
@@ -74,10 +74,12 @@ export default function LearnPage() {
                   <p className="text-sm text-gray-600">
                     {radical.stroke_count} stroke{radical.stroke_count !== 1 ? 's' : ''}
                   </p>
-                  <Button variant="outline" size="sm" className="mt-4 w-full">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Learn More
-                  </Button>
+                  <Link href={`/learn/${radical.id}`}>
+                    <Button variant="outline" size="sm" className="mt-4 w-full">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Learn More
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
